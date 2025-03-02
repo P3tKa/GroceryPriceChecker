@@ -2,55 +2,83 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.2'
 	id 'io.spring.dependency-management' version '1.1.7'
-	id 'gg.jte.gradle' version '3.1.12'
-	id "com.github.node-gradle.node" version "7.1.0"
+	id 'checkstyle'
 }
 
-group = 'lt.p3tka'
-version = '0.0.1-SNAPSHOT'
+tasks.named('bootJar') {
+	enabled = false
+}
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(23)
+allprojects {
+	group = 'dev.petkevicius'
+	version = '0.0.1-SNAPSHOT'
+
+	repositories {
+		mavenCentral()
 	}
 }
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'checkstyle'
+
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(23)
+		}
 	}
-}
 
-repositories {
-	mavenCentral()
-}
-
-dependencies {
-	implementation('org.springframework.boot:spring-boot-starter-data-jpa') {
-		exclude group: 'org.hibernate', module: 'hibernate-core'
+	checkstyle {
+		configFile = file("${rootProject.projectDir}/config/checkstyle/checks.xml")
+		ignoreFailures = false
+		toolVersion = "10.21.2"
+		maxWarnings = 0
 	}
-	implementation 'org.hibernate.orm:hibernate-core:6.5.2.Final'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'gg.jte:jte:3.1.12'
-	implementation 'gg.jte:jte-spring-boot-starter-3:3.1.12'
-	implementation 'io.github.wimdeblauwe:htmx-spring-boot:4.0.1'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
-	runtimeOnly 'org.postgresql:postgresql'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
 
-jte {
-	generate()
-	binaryStaticContent = true
-}
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
 
-tasks.named('test') {
-	useJUnitPlatform()
+	dependencies {
+		// Compile Only
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+
+		// Development Only
+		developmentOnly 'org.springframework.boot:spring-boot-devtools'
+		developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+
+		// Implementation
+		implementation('org.springframework.boot:spring-boot-starter-data-jpa') {
+			exclude group: 'org.hibernate', module: 'hibernate-core'
+		}
+		implementation 'org.hibernate.orm:hibernate-core:6.5.2.Final'
+		implementation "org.flywaydb:flyway-core"
+		implementation "org.flywaydb:flyway-database-postgresql"
+		implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+		implementation 'org.springframework.boot:spring-boot-starter-security'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		implementation 'io.github.wimdeblauwe:htmx-spring-boot:4.0.1'
+
+		// Runtime Only
+		runtimeOnly 'org.postgresql:postgresql'
+
+		// Test Implementation
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testImplementation 'org.springframework.security:spring-security-test'
+		testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+		testImplementation 'org.testcontainers:junit-jupiter'
+		testImplementation 'org.testcontainers:postgresql'
+
+		// Test Runtime Only
+		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	}
+
+	test {
+		useJUnitPlatform()
+	}
 }

@@ -1,0 +1,1 @@
+../../../../../../../web/src/test/java/dev/petkevicius/groceryPriceChecker/TestcontainersConfiguration.java
