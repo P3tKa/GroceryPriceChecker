@@ -2,6 +2,8 @@ package dev.petkevicius.groceryPriceChecker.repository.groceries;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import java.math.BigDecimal;
+
 import dev.petkevicius.groceryPriceChecker.RepositoryTest;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.Grocery;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.GroceryUnit;
@@ -27,9 +29,10 @@ public class GroceryRepositoryTest extends RepositoryTest {
         Grocery grocery = Grocery.builder()
             .id("1")
             .name("Banana")
-            .quantity(1f)
+            .quantity(BigDecimal.ONE)
             .unit(GroceryUnit.KG)
             .build();
+
         groceryRepository.save(grocery);
 
         assertThat(groceryRepository.count()).isOne();

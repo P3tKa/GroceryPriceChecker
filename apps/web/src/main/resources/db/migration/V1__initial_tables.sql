@@ -5,40 +5,44 @@ CREATE table IF NOT EXISTS groceries (
     supplier varchar,
     category varchar,
     sub_category varchar,
-    barcodes TEXT[],
-    quantity float NOT NULL,
+    sub_sub_category varchar,
+    barcodes bigint[],
+    quantity DECIMAL(10, 2) NOT NULL CHECK (quantity >= 0),
     unit varchar NOT NULL,
-    image_url varchar
+    image_url varchar,
+    search_vector tsvector GENERATED ALWAYS AS (to_tsvector('lithuanian', name)) STORED
 );
 
 CREATE table IF NOT EXISTS vendors (
     id varchar PRIMARY KEY,
-    name varchar NOT NULL UNIQUE,
     image_url varchar,
     country_of_origin varchar
 );
 
 CREATE table IF NOT EXISTS groceries_vendors (
     id varchar PRIMARY KEY,
-    grocery_id varchar REFERENCES groceries(id),
-    vendor_id varchar REFERENCES vendors(id),
-    price float NOT NULL,
-    price_with_discount float,
-    price_with_loyalty_card float,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    approved boolean NOT NULL DEFAULT FALSE
+    grocery_id varchar REFERENCES groceries(id) ON DELETE CASCADE,
+    vendor_id varchar REFERENCES vendors(id) ON DELETE CASCADE,
+    grocery_code varchar NOT NULL,
+    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
+    price_with_discount DECIMAL(10, 2) CHECK (price_with_discount >= 0),
+    price_with_loyalty_card DECIMAL(10, 2) CHECK (price_with_loyalty_card >= 0),
+    created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    approved boolean NOT NULL DEFAULT FALSE,
+    UNIQUE (vendor_id, grocery_code)
 );
 
 CREATE TABLE IF NOT EXISTS grocery_price_history (
     id SERIAL PRIMARY KEY,
-    grocery_vendor_id varchar REFERENCES groceries_vendors(id),
-    price float NOT NULL,
-    price_with_discount float,
-    price_with_loyalty_card float,
+    grocery_vendor_id varchar REFERENCES groceries_vendors(id) ON DELETE CASCADE,
+    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
+    price_with_discount DECIMAL(10, 2) CHECK (price_with_discount >= 0),
+    price_with_loyalty_card DECIMAL(10, 2) CHECK (price_with_loyalty_card >= 0),
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_groceries_vendors_grocery_id ON groceries_vendors(grocery_id);
-CREATE INDEX idx_groceries_vendors_vendor_id ON groceries_vendors(vendor_id);
-CREATE INDEX idx_grocery_price_history_grocery_vendor_id ON grocery_price_history(grocery_id, vendor_id);
+CREATE INDEX IF NOT EXISTS idx_search_vector ON groceries USING GIN(search_vector);
+CREATE INDEX IF NOT EXISTS idx_groceries_vendors_grocery_id ON groceries_vendors(grocery_id);
+CREATE INDEX IF NOT EXISTS idx_groceries_vendors_vendor_id ON groceries_vendors(vendor_id);
+CREATE INDEX IF NOT EXISTS idx_grocery_price_history_grocery_vendor_id ON grocery_price_history(grocery_vendor_id);

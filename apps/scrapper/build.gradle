@@ -1,3 +1,11 @@
 springBoot {
     mainClass = 'dev.petkevicius.groceryPriceChecker.ScrapperApplication'
 }
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+    implementation 'com.microsoft.playwright:playwright:1.35.0'
+    implementation 'org.jsoup:jsoup:1.19.1'
+}
