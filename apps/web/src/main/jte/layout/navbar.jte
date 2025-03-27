@@ -6,13 +6,27 @@
             Checker
         </p>
     </a>
-    <input type="search" placeholder="Search" class="border border-gray-300 rounded-lg p-2 mt-4 h-10">
+    <input type="search"
+           name="query"
+           placeholder="Search"
+           class="border border-gray-300 rounded-lg p-2 mt-4 h-10"
+           hx-get="/search"
+           hx-trigger="input changed delay:500ms, keyup[key=='Enter']:not([value=''])"
+           hx-target="#grocery-list"
+           hx-swap="outerHTML"
+           hx-indicator="#htmx-loader"
+    >
+
     <div class="size-12 m-2">
         <a href="/cart" id="shopping-cart" class="relative inline-block">
             <img src="/svg/cart.svg" alt="Shopping cart" class="z-10 absolute">
             <img src="/svg/groceries.svg" id="groceries" alt="Groceries inside shopping cart">
         </a>
     </div>
+</div>
+
+<div id="htmx-loader">
+    testing
 </div>
 
 <style>

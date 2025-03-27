@@ -1,8 +1,11 @@
 INSERT INTO vendors (id, image_url, country_of_origin)
-VALUES ('IKI', null, 'LT');
+SELECT 'IKI', null, 'LT'
+WHERE NOT EXISTS (SELECT 1 FROM vendors WHERE id = 'IKI');
 
 INSERT INTO vendors (id, image_url, country_of_origin)
-VALUES ('RIMI', null, 'LT');
+SELECT 'RIMI', null, 'LT'
+WHERE NOT EXISTS (SELECT 1 FROM vendors WHERE id = 'RIMI');
 
 INSERT INTO vendors (id, image_url, country_of_origin)
-VALUES ('BARBORA', null, 'LT');
+SELECT 'BARBORA', null, 'LT'
+WHERE NOT EXISTS (SELECT 1 FROM vendors WHERE id = 'BARBORA');

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,7 +51,7 @@ public class BarboraFetchAPI {
     }
 
     //    @Scheduled(cron = "0 0 */6 * * *") // Run every 6 hours starting from midnight
-    @Scheduled(cron = "*/5 * * * * *") // Run every 45 seconds
+//    @Scheduled(cron = "*/5 * * * * *") // Run every 45 seconds
     public List<Grocery> fetchAllCategoryProducts() {
         logger.info("Fetching all products from vendor {}", VENDOR_NAME.name());
         List<Grocery> allGroceries = new ArrayList<>();
@@ -135,7 +134,7 @@ public class BarboraFetchAPI {
                         }
                     })
                     .filter(Objects::nonNull)
-                    .collect(Collectors.toList())
+                    .toList()
                 ).orElse(List.of());
         } else {
             throw new RestClientException("Failed to get resposne for vendor %s"
