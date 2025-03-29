@@ -25,6 +25,7 @@ public class GroceryController {
     public String view(Model model) {
         List<GroceryDTO> groceries = groceryService.getALlApprovedGroceries();
         model.addAttribute("groceries", groceries);
+        model.addAttribute("categories", Category.values());
         return "pages/index";
     }
 

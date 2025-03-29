@@ -7,8 +7,10 @@ import lombok.Getter;
 
 @Getter
 public enum Category implements CategoryType {
-    FRUITS_AND_VEGETABLES(SubCategory.FRUITS_AND_BERRIES, SubCategory.VEGETABLES_AND_MUSHROOMS);
+    FRUITS_AND_VEGETABLES("Fruits and Vegetables", SubCategory.FRUITS_AND_BERRIES, SubCategory.VEGETABLES_AND_MUSHROOMS),
+    MILK_PRODUCTS_AND_EGGS("Milk Products and Eggs", SubCategory.MILK);
 
+    private final String displayName;
     private final SubCategory[] subCategories;
 
     private static final Map<SubSubCategory, SubCategory> subSubToSubMap = new HashMap<>();
@@ -25,7 +27,8 @@ public enum Category implements CategoryType {
         }
     }
 
-    Category(SubCategory... subCategories) {
+    Category(String displayName, SubCategory... subCategories) {
+        this.displayName = displayName;
         this.subCategories = subCategories;
     }
 
@@ -44,18 +47,29 @@ public enum Category implements CategoryType {
 
     @Getter
     public enum SubCategory implements CategoryType {
-        FRUITS_AND_BERRIES(SubSubCategory.BANANA),
-        VEGETABLES_AND_MUSHROOMS(SubSubCategory.MUSHROOMS);
+        FRUITS_AND_BERRIES("Fruits and Berries", SubSubCategory.BANANA),
+        VEGETABLES_AND_MUSHROOMS("Vegetables and Mushrooms", SubSubCategory.MUSHROOMS),
+        MILK("Milk", SubSubCategory.MILK_DRINKS);
 
+        private final String displayName;
         private final SubSubCategory[] subSubCategories;
 
-        SubCategory(SubSubCategory... subSubCategories) {
+        SubCategory(String displayName, SubSubCategory... subSubCategories) {
+            this.displayName = displayName;
             this.subSubCategories = subSubCategories;
         }
     }
 
+    @Getter
     public enum SubSubCategory implements CategoryType {
-        BANANA,
-        MUSHROOMS
+        BANANA("Banana"),
+        MUSHROOMS("Mushrooms"),
+        MILK_DRINKS("Milk Drinks");
+
+        private final String displayName;
+
+        SubSubCategory(String displayName) {
+            this.displayName = displayName;
+        }
     }
 }

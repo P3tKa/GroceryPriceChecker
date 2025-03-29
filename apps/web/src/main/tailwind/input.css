@@ -1,14 +1,31 @@
 @import "tailwindcss";
 @source "../jte";
 
-#htmx-loader {
+#loader-icon {
+    display: none;
+    position: absolute;
+    top: -10px;
+    transform: scale(1.2);
     height: 9px;
     width: 60px;
     --c:no-repeat linear-gradient(#000 0 0);
     background: var(--c), var(--c), var(--c), var(--c);
     background-size: 26% 3px;
     animation: l2 1s infinite;
+    transition: opacity .2s ease-in, display .2s ease-in allow-discreate;
 }
+
+.htmx-request#loader-icon{
+    opacity: 1;
+    display: block;
+}
+
+@starting-style {
+    .htmx-request#loader-icon{
+        opacity: 0;
+    }
+}
+
 @keyframes l2 {
     0%,
     70%,
@@ -17,4 +34,92 @@
     28%  {background-position: calc(0*100%/3) 100%,calc(1*100%/3) 0   ,calc(2*100%/3) 100%,calc(3*100%/3) 100%}
     42%  {background-position: calc(0*100%/3) 100%,calc(1*100%/3) 100%,calc(2*100%/3) 0   ,calc(3*100%/3) 100%}
     56%  {background-position: calc(0*100%/3) 100%,calc(1*100%/3) 100%,calc(2*100%/3) 100%,calc(3*100%/3) 0   }
+}
+
+select,
+::picker(select) {
+    appearance: base-select;
+    font: -webkit-small-control;
+}
+
+select {
+    padding-right: 1rem;
+    text-align: right;
+    background: none;
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    field-sizing: content;
+}
+
+select:focus {
+    outline: none;
+}
+
+select:hover {
+    cursor: pointer;
+}
+
+::picker(select) {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    border-top: 1px solid white;
+    margin-top: -1px;
+    padding: 0;
+    box-shadow: none;
+    background: white;
+}
+
+option {
+    color: black;
+    padding: 0.75rem 2rem 0.75rem 0.75rem;
+}
+
+.arrow img {
+    width: 1em;
+    opacity: 0.4;
+    vertical-align: middle;
+}
+
+option, selectedcontent {
+    letter-spacing: 0.3px;
+}
+
+select::picker-icon {
+    display: none;
+}
+
+/* checked style */
+
+option:hover,
+option:checked {
+    cursor: pointer;
+    background: #ededed;
+    color: black;
+}
+
+option::checkmark {
+    content: '';
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMjAuMjg1IDJsLTExLjI4NSAxMS41NjctNS4yODYtNS4wMTEtMy43MTQgMy43MTYgOSA4LjcyOCAxNS0xNS4yODV6Ii8+PC9zdmc+);
+    background-size: cover;
+    position: absolute;
+    right: 0.75rem;
+}
+
+.arrow-button::after {
+    position: absolute;
+    right: 0;
+    bottom: 0.2rem;
+    content: '↓';
+    font-size: 1rem;
+    color: #000;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+button:focus-within .arrow-button::after {
+    transform: rotate(-90deg);
 }

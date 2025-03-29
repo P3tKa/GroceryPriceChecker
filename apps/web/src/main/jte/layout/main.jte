@@ -1,6 +1,7 @@
 @import gg.jte.Content
 
 @param Content content
+@param dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category[] categories
 
 <!doctype html>
 <html lang="en">
@@ -23,6 +24,9 @@
 <nav>
     @template.layout.navbar()
 </nav>
+<aside>
+    @template.layout.sidebar(categories = categories)
+</aside>
 <main>
     ${content}
 </main>

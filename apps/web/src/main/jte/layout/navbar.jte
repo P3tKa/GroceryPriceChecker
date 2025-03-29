@@ -14,7 +14,7 @@
            hx-trigger="input changed delay:500ms, keyup[key=='Enter']:not([value=''])"
            hx-target="#grocery-list"
            hx-swap="outerHTML"
-           hx-indicator="#htmx-loader"
+           hx-indicator="#loader-icon"
     >
 
     <div class="size-12 m-2">
@@ -23,10 +23,6 @@
             <img src="/svg/groceries.svg" id="groceries" alt="Groceries inside shopping cart">
         </a>
     </div>
-</div>
-
-<div id="htmx-loader">
-    testing
 </div>
 
 <style>
