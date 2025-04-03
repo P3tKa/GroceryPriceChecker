@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public record GroceryRequest(
     @RequestParam(name = "page", defaultValue = "")
-    @Min(value = 0, message = "Page must be 0 or greater")
+    @Min(value = 1, message = "Page must be 1 or greater")
     Optional<Integer> page,
 
     @RequestParam(name = "size")

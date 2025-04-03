@@ -26,4 +26,8 @@ public interface GroceryRepository extends JpaRepository<Grocery, String> {
     List<Grocery> findBySearchQuery(@Param("searchQuery") String searchQuery);
 
     Page<Grocery> findByCategoryAndGroceryVendorsApprovedTrue(Category category, Pageable pageable);
+
+    Page<Grocery> findBySubCategoryAndGroceryVendorsApprovedTrue(Category.SubCategory category, Pageable pageable);
+
+    Page<Grocery> findBySubSubCategoryAndGroceryVendorsApprovedTrue(Category.SubSubCategory category, Pageable pageable);
 }

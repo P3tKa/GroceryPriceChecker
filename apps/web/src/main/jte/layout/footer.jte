@@ -1,3 +1,3 @@
 <div class="text-center">
-    Footer
+
 </div>

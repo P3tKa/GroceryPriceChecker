@@ -6,7 +6,7 @@
              alt="${grocery.name()}"
              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
     </div>
-    <h2 class="self-center" style="height: 50px; text-align: center">${grocery.name()}</h2>
+    <h2 class="self-center" style="height: 70px; text-align: center">${grocery.name()}</h2>
 
     @for(dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryVendorDTO vendor : grocery.sortVendorsByPrice())
         <div class="flex">
