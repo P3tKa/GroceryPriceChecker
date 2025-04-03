@@ -1,8 +1,11 @@
-@param java.util.Optional<dev.petkevicius.groceryPriceChecker.controller.model.SortValue> sortValue
+@import java.util.Optional
+@import org.springframework.data.domain.Pageable
+
+@param org.springframework.data.domain.Pageable pageable
 
 <select
     class="ml-auto"
-    name="sortBy"
+    name="sort"
     aria-label="Rikiuoti pagal"
     onchange="this.form.submit()"
 >
@@ -16,14 +19,22 @@
     </button>
     <option value="" disabled selected hidden>Paieška</option>
     <option
-        value="PRICE_ASC"
-        selected="${sortValue.map(sort -> dev.petkevicius.groceryPriceChecker.controller.model.SortValue.PRICE_ASC.equals(sort)).orElse(false)}"
+        value="price,asc"
+        selected="${Optional.ofNullable(pageable)
+            .map(Pageable::getSort)
+            .flatMap(sort -> Optional.ofNullable(sort.getOrderFor("price")))
+            .map(order -> order.getDirection().isAscending())
+            .orElse(false)}"
     >
         Kaina: nuo žemiausios
     </option>
     <option
-        value="PRICE_DESC"
-        selected="${sortValue.map(sort -> dev.petkevicius.groceryPriceChecker.controller.model.SortValue.PRICE_DESC.equals(sort)).orElse(false)}"
+        value="price,desc"
+        selected="${Optional.ofNullable(pageable)
+            .map(Pageable::getSort)
+            .flatMap(sort -> Optional.ofNullable(sort.getOrderFor("price")))
+            .map(order -> order.getDirection().isDescending())
+            .orElse(false)}"
     >
         Kaina: nuo aukščiausios
     </option>

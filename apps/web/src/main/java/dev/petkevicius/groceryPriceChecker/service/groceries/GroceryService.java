@@ -2,11 +2,8 @@ package dev.petkevicius.groceryPriceChecker.service.groceries;
 
 import java.util.List;
 
-import dev.petkevicius.groceryPriceChecker.controller.model.GroceryRequest;
-import dev.petkevicius.groceryPriceChecker.controller.model.SortValue;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.Grocery;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.GroceryVendor;
-import dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.common.CategoryType;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryDTO;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryPageDTO;
@@ -14,9 +11,7 @@ import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryVendorDTO
 import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.VendorDTO;
 import dev.petkevicius.groceryPriceChecker.repository.groceries.GroceryRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,27 +25,9 @@ public class GroceryService {
 
     public GroceryPageDTO getALlApprovedGroceries(
         CategoryType categoryType,
-        GroceryRequest request
+        Pageable pageable
     ) {
-        Pageable page = PageRequest.of(
-            request.page().map(p-> p - 1).orElse(0),
-            request.size().orElse(25),
-            request.sortBy()
-                .map(sortValue -> sortValue.equals(SortValue.PRICE_ASC)
-                    ? Sort.by("groceryVendors.price").ascending()
-                    : Sort.by("groceryVendors.price").descending()
-                ).orElse(Sort.unsorted())
-        );
-
-        Page<Grocery> groceries = switch (categoryType) {
-            case Category category ->
-                groceryRepository.findByCategoryAndGroceryVendorsApprovedTrue(category, page);
-            case Category.SubCategory subCategory ->
-                groceryRepository.findBySubCategoryAndGroceryVendorsApprovedTrue(subCategory, page);
-            case Category.SubSubCategory subSubCategory ->
-                groceryRepository.findBySubSubCategoryAndGroceryVendorsApprovedTrue(subSubCategory, page);
-            default -> throw new IllegalArgumentException("Invalid category type");
-        };
+        Page<Grocery> groceries = groceryRepository.findApprovedGroceriesByCategory(categoryType, pageable);
 
         List<GroceryDTO> groceryDTOs = groceries.stream()
             .map(this::mapToGroceryDTO)
@@ -58,7 +35,7 @@ public class GroceryService {
 
         return new GroceryPageDTO(
             groceryDTOs,
-            groceries.getNumber() + 1,
+            groceries.getNumber(),
             groceries.getTotalPages()
         );
     }

@@ -1,3 +1,5 @@
+@import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryVendorDTO
+
 @param dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryDTO grocery
 
 <div class="flex flex-col self-center items-center border border-black">
@@ -8,7 +10,7 @@
     </div>
     <h2 class="self-center" style="height: 70px; text-align: center">${grocery.name()}</h2>
 
-    @for(dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryVendorDTO vendor : grocery.sortVendorsByPrice())
+    @for(GroceryVendorDTO vendor : grocery.sortVendorsByPrice())
         <div class="flex">
             <img src="${vendor.vendorDto().imageUrl()}" alt="${vendor.vendorDto().name()}" class="h-4">
             <p>€ ${vendor.price()} / ${grocery.unit()}</p>

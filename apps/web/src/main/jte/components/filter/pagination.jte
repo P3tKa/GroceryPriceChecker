@@ -3,7 +3,7 @@
 
 <nav class="flex flex-row items-center justify-center p-1 rounded bg-white space-x-2">
     <div class="w-5">
-        @if(currentPage > 1)
+        @if(currentPage > 0)
             <a class="p-1 text-black bg-white"
                href="javascript:void(0);"
                onclick="navigateToPage(${currentPage - 1})"
@@ -15,9 +15,9 @@
             </a>
         @endif
     </div>
-    <p>Page ${currentPage} of ${totalPages}</p>
+    <p>Page ${currentPage + 1} of ${totalPages}</p>
     <div class="w-5">
-        @if (currentPage < totalPages)
+        @if (currentPage + 1 < totalPages)
             <a class="p-1 text-black bg-white"
                href="javascript:void(0);"
                onclick="navigateToPage(${currentPage + 1})"

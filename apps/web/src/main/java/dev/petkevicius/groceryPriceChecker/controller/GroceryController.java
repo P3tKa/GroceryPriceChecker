@@ -2,25 +2,20 @@ package dev.petkevicius.groceryPriceChecker.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
-import dev.petkevicius.groceryPriceChecker.controller.model.GroceryRequest;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.common.CategoryType;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryDTO;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryPageDTO;
 import dev.petkevicius.groceryPriceChecker.service.groceries.GroceryService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@Validated
 public class GroceryController {
 
     private final GroceryService groceryService;
@@ -38,16 +33,10 @@ public class GroceryController {
     @GetMapping("/{category}")
     public String viewCategory(
         @PathVariable String category,
-        @Valid GroceryRequest request,
-        BindingResult bindingResult,
+        Pageable pageable,
         Model model
     ) {
         model.addAttribute("categories", Category.values());
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("groceries", List.of());
-            return "pages/category";
-        }
 
         CategoryType categoryType = getCategoryType(category);
         if (categoryType == null) {
@@ -55,9 +44,9 @@ public class GroceryController {
             return "pages/notFound";
         }
 
-        GroceryPageDTO groceries = groceryService.getALlApprovedGroceries(categoryType, request);
+        GroceryPageDTO groceries = groceryService.getALlApprovedGroceries(categoryType, pageable);
         model.addAttribute("groceries", groceries);
-        model.addAttribute("groceryRequest", request);
+        model.addAttribute("pageable", pageable);
 
         return "pages/category";
     }
