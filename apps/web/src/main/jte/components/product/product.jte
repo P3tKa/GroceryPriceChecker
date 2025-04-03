@@ -1,6 +1,7 @@
+@import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryDTO
 @import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryVendorDTO
 
-@param dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryDTO grocery
+@param GroceryDTO grocery
 
 <div class="flex flex-col self-center items-center border border-black">
     <div style="width: 100%; padding-top: 100%; position: relative;">

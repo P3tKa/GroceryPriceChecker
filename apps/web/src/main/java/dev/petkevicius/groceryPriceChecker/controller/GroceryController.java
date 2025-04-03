@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @Controller
 public class GroceryController {
 
@@ -49,6 +48,14 @@ public class GroceryController {
         model.addAttribute("pageable", pageable);
 
         return "pages/category";
+    }
+
+    @GetMapping("/cart")
+    public String viewCart(Model model) {
+        model.addAttribute("categories", Category.values());
+        GroceryPageDTO groceries = groceryService.getALlApprovedGroceries(Category.SubCategory.FRUITS_AND_BERRIES, Pageable.ofSize(25));
+        model.addAttribute("groceries", groceries.groceries());
+        return "pages/cart";
     }
 
     @GetMapping("/search")

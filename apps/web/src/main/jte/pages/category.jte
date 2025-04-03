@@ -1,6 +1,10 @@
-@param dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryPageDTO groceries
-@param dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category[] categories
-@param org.springframework.data.domain.Pageable pageable
+@import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryPageDTO
+@import dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category
+@import org.springframework.data.domain.Pageable
+
+@param GroceryPageDTO groceries
+@param Category[] categories
+@param Pageable pageable
 
 @template.layout.main(content = @`
     <div class="flex flex-col justify-center items-center w-full relative">

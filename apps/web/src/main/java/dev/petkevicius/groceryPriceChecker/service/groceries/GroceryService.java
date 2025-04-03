@@ -48,8 +48,9 @@ public class GroceryService {
             .toList();
     }
 
-    private GroceryDTO mapToGroceryDTO(Grocery grocery) {
+    public GroceryDTO mapToGroceryDTO(Grocery grocery) {
         return new GroceryDTO(
+            grocery.getId(),
             grocery.getName(),
             grocery.getCountryOfOrigin(),
             grocery.getSupplier(),

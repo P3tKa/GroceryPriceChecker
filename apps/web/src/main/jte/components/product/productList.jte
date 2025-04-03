@@ -1,6 +1,7 @@
+@import java.util.List
 @import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryDTO
 
-@param java.util.List<dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryDTO> groceries
+@param List<GroceryDTO> groceries
 
 @if(groceries.isEmpty())
     <div class="flex flex-col justify-center items-center w-full relative">

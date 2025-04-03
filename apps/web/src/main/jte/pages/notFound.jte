@@ -1,4 +1,6 @@
-@param dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category[] categories
+@import dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category
+
+@param Category[] categories
 
 @template.layout.main(content = @`
     <div class="text-center content-center h-screen">

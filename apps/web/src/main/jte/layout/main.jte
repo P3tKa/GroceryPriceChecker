@@ -1,7 +1,8 @@
 @import gg.jte.Content
+@import dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category
 
 @param Content content
-@param dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category[] categories
+@param Category[] categories
 
 <!doctype html>
 <html lang="en">

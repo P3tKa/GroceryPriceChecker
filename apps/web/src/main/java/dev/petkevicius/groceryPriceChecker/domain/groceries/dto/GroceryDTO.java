@@ -8,6 +8,7 @@ import dev.petkevicius.groceryPriceChecker.domain.groceries.GroceryUnit;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category;
 
 public record GroceryDTO(
+    String id,
     String name,
     String countryOfOrigin,
     String supplier,

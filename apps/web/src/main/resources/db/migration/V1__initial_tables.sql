@@ -42,7 +42,23 @@ CREATE TABLE IF NOT EXISTS grocery_price_history (
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS shopping_carts (
+    id varchar PRIMARY KEY,
+    user_id varchar NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS shopping_cart_groceries (
+    id varchar PRIMARY KEY,
+    shopping_cart_id varchar REFERENCES shopping_carts(id) ON DELETE CASCADE,
+    grocery_id varchar REFERENCES groceries(id) ON DELETE CASCADE,
+    quantity DECIMAL(10, 2) NOT NULL CHECK (quantity >= 0)
+);
+
 CREATE INDEX IF NOT EXISTS idx_search_vector ON groceries USING GIN(search_vector);
 CREATE INDEX IF NOT EXISTS idx_groceries_vendors_grocery_id ON groceries_vendors(grocery_id);
 CREATE INDEX IF NOT EXISTS idx_groceries_vendors_vendor_id ON groceries_vendors(vendor_id);
 CREATE INDEX IF NOT EXISTS idx_grocery_price_history_grocery_vendor_id ON grocery_price_history(grocery_vendor_id);
+CREATE INDEX IF NOT EXISTS idx_cart_items_cart_id ON shopping_cart_groceries (shopping_cart_id);
+CREATE INDEX IF NOT EXISTS idx_cart_items_grocery_id ON shopping_cart_groceries (grocery_id);
