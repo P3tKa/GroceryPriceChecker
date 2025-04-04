@@ -22,7 +22,7 @@ public interface GroceryRepository extends JpaRepository<Grocery, String> {
         JOIN plainto_tsquery('lithuanian', :searchQuery) as query ON g.search_vector @@ query
         WHERE gv.approved = true
         ORDER BY rank DESC
-        LIMIT 5
+        LIMIT 10
         """, nativeQuery = true)
     List<Grocery> findBySearchQuery(@Param("searchQuery") String searchQuery);
 

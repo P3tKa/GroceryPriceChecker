@@ -30,7 +30,7 @@
     <div class="size-12 m-2">
         <button
                 id="shopping-cart"
-                class="relative inline-block"
+                class="relative inline-block cursor-pointer"
                 hx-trigger="click"
                 hx-swap="none"
                 hx-vals='{"toggle": "true"}'
