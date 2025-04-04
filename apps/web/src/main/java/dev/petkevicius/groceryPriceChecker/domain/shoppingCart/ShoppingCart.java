@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "shopping_baskets")
+@Table(name = "shopping_carts")
 @Data
 @Builder
 @AllArgsConstructor
@@ -35,5 +36,5 @@ public class ShoppingCart {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ShoppingCartGrocery> shoppingCartGroceries;
+    private List<ShoppingCartGrocery> shoppingCartGroceries = new ArrayList<>();
 }

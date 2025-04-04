@@ -1,8 +1,10 @@
+@import dev.petkevicius.groceryPriceChecker.domain.shoppingCart.dto.ShoppingCartDTO
 @import gg.jte.Content
 @import dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category
 
 @param Content content
 @param Category[] categories
+@param ShoppingCartDTO shoppingCart
 
 <!doctype html>
 <html lang="en">
@@ -27,6 +29,9 @@
 </nav>
 <aside>
     @template.layout.sidebar(categories = categories)
+</aside>
+<aside>
+    @template.layout.cart(opened = false, shoppingCart = shoppingCart)
 </aside>
 <main>
     ${content}

@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "basket_items")
+@Table(name = "shopping_cart_groceries")
 @Data
 @Builder
 @AllArgsConstructor
@@ -31,10 +31,10 @@ public class ShoppingCartGrocery {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "shopping_cart_id")
+    @JoinColumn(name = "shopping_cart_id", nullable = false)
     private ShoppingCart shoppingCart;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "grocery_id", nullable = false)
     private Grocery grocery;
 

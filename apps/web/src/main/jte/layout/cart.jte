@@ -1,10 +1,11 @@
-@import java.util.List
 @import java.math.BigDecimal
-@import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryDTO
+@import dev.petkevicius.groceryPriceChecker.domain.shoppingCart.dto.ShoppingCartDTO
+@import dev.petkevicius.groceryPriceChecker.domain.shoppingCart.dto.ShoppingCartGroceryDTO
 
-@param List<GroceryDTO> groceries
+@param ShoppingCartDTO shoppingCart
+@param boolean opened
 
-<div class="relative z-10 mt-10 pt-10">
+<div id="shopping-cart-container" style="display: ${opened ? "block" : "none"}" class="relative z-10 mt-10 pt-10">
     <!--
       Background backdrop, show/hide based on slide-over state.
 
@@ -15,10 +16,14 @@
         From: "opacity-100"
         To: "opacity-0"
     -->
-    <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+    <div id="backdrop"
+         class="fixed inset-0 bg-gray-500/75 transition-opacity shopping-cart-backdrop ${opened ? "show-cart-backdrop" : ""}"
+         aria-hidden="true">
+
+    </div>
 
     <div class="fixed inset-0 overflow-hidden">
-        <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute insaet-0 overflow-hidden">
             <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
                 <!--
                   Slide-over panel, show/hide based on slide-over state.
@@ -30,13 +35,21 @@
                     From: "translate-x-0"
                     To: "translate-x-full"
                 -->
-                <div class="pointer-events-auto w-screen max-w-md">
+                <div id="slideOverPanel"
+                     class="pointer-events-auto w-screen max-w-md shopping-cart ${opened ? "show-cart" : ""}"
+                >
                     <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                         <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                             <div class="flex items-start justify-between">
                                 <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
                                 <div class="ml-3 flex h-7 items-center">
-                                    <button type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500">
+                                    <button type="button"
+                                            class="relative -m-2 p-2 text-gray-400 hover:text-gray-500 cursor-pointer"
+                                            hx-trigger="click"
+                                            hx-swap="none"
+                                            hx-vals='{"toggle": "true"}'
+                                            onclick="togglePanel()"
+                                    >
                                         <span class="absolute -inset-0.5"></span>
                                         <span class="sr-only">Close panel</span>
                                         <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
@@ -49,8 +62,8 @@
                             <div class="mt-8">
                                 <div class="flow-root">
                                     <ul role="list" class="-my-6 divide-y divide-gray-200">
-                                        @for(GroceryDTO grocery : groceries)
-                                            @template.components.cart.cart-product(grocery=grocery)
+                                        @for(ShoppingCartGroceryDTO shoppingCartGrocery : shoppingCart.shoppingCartGroceries())
+                                            @template.components.cart.cart-product(shoppingCartId = shoppingCart.id(), shoppingCartGrocery = shoppingCartGrocery)
                                         @endfor
                                     </ul>
                                 </div>
@@ -61,8 +74,8 @@
                             <div class="flex justify-between text-base font-medium text-gray-900">
                                 <p>Subtotal</p>
                                 <p>€
-                                    ${groceries.stream()
-                                        .map(grocery -> grocery.groceryVendorDTOS().get(0).price())
+                                    ${shoppingCart.shoppingCartGroceries().stream()
+                                        .map(grocery -> grocery.grocery().groceryVendorDTOS().getFirst().price())
                                         .reduce(BigDecimal.ZERO, BigDecimal::add)
                                     }
                                 </p>

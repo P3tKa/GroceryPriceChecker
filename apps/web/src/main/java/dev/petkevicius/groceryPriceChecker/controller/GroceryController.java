@@ -6,6 +6,8 @@ import dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.common.CategoryType;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryDTO;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryPageDTO;
+import dev.petkevicius.groceryPriceChecker.domain.shoppingCart.dto.ShoppingCartDTO;
+import dev.petkevicius.groceryPriceChecker.service.cart.ShoppingCartService;
 import dev.petkevicius.groceryPriceChecker.service.groceries.GroceryService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -18,14 +20,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class GroceryController {
 
     private final GroceryService groceryService;
+    private final ShoppingCartService shoppingCartService;
 
-    public GroceryController(GroceryService groceryService) {
+    public GroceryController(
+        GroceryService groceryService,
+        ShoppingCartService shoppingCartService
+    ) {
         this.groceryService = groceryService;
+        this.shoppingCartService = shoppingCartService;
     }
 
     @GetMapping("/")
     public String view(Model model) {
         model.addAttribute("categories", Category.values());
+        ShoppingCartDTO shoppingCart = shoppingCartService.findUsersShoppingCart("testUserId");
+        model.addAttribute("shoppingCart", shoppingCart);
         return "pages/index";
     }
 
@@ -40,6 +49,9 @@ public class GroceryController {
         CategoryType categoryType = getCategoryType(category);
         if (categoryType == null) {
             model.addAttribute("groceries", List.of());
+            ShoppingCartDTO shoppingCart = shoppingCartService.findUsersShoppingCart("testUserId");
+            model.addAttribute("shoppingCart", shoppingCart);
+
             return "pages/notFound";
         }
 
@@ -47,15 +59,10 @@ public class GroceryController {
         model.addAttribute("groceries", groceries);
         model.addAttribute("pageable", pageable);
 
-        return "pages/category";
-    }
+        ShoppingCartDTO shoppingCart = shoppingCartService.findUsersShoppingCart("testUserId");
+        model.addAttribute("shoppingCart", shoppingCart);
 
-    @GetMapping("/cart")
-    public String viewCart(Model model) {
-        model.addAttribute("categories", Category.values());
-        GroceryPageDTO groceries = groceryService.getALlApprovedGroceries(Category.SubCategory.FRUITS_AND_BERRIES, Pageable.ofSize(25));
-        model.addAttribute("groceries", groceries.groceries());
-        return "pages/cart";
+        return "pages/category";
     }
 
     @GetMapping("/search")

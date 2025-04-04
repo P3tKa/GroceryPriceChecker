@@ -1,3 +1,13 @@
+<script>
+    function togglePanel() {
+        const shoppingCartContainer = document.getElementById('shopping-cart-container');
+        shoppingCartContainer.style.display = shoppingCartContainer.style.display === 'block' ? 'none' : 'block';
+
+        document.getElementById('backdrop').classList.toggle('show-cart-backdrop');
+        document.getElementById('slideOverPanel').classList.toggle('show-cart');
+    }
+</script>
+
 <div class="flex justify-between align-center h-22">
     <a href="/" class="m-2 p-1 border-1">
         <p class="text-md leading-5">
@@ -18,10 +28,17 @@
     >
 
     <div class="size-12 m-2">
-        <a href="/cart" id="shopping-cart" class="relative inline-block">
+        <button
+                id="shopping-cart"
+                class="relative inline-block"
+                hx-trigger="click"
+                hx-swap="none"
+                hx-vals='{"toggle": "true"}'
+                onclick="togglePanel()"
+        >
             <img src="/svg/cart.svg" alt="Shopping cart" class="z-10 absolute">
             <img src="/svg/groceries.svg" id="groceries" alt="Groceries inside shopping cart">
-        </a>
+        </button>
     </div>
 </div>
 

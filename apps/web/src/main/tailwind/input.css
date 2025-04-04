@@ -123,3 +123,25 @@ option::checkmark {
 button:focus-within .arrow-button::after {
     transform: rotate(-90deg);
 }
+
+#shopping-cart-container {
+    display: none;
+}
+
+.shopping-cart {
+    transform: translateX(100%);
+    transition: transform 0.8s ease-in-out, display .2s ease-in allow-discreate;
+}
+
+.show-cart {
+    transform: translateX(0);
+}
+
+.shopping-cart-backdrop {
+    opacity: 0;
+    transition: opacity .2s ease-in, display .2s ease-in allow-discreate;
+}
+
+.show-cart-backdrop {
+    opacity: 1;
+}

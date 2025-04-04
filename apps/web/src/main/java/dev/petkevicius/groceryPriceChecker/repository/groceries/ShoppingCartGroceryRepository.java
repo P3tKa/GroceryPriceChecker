@@ -14,9 +14,4 @@ public interface ShoppingCartGroceryRepository extends JpaRepository<ShoppingCar
         ShoppingCart shoppingCart,
         Grocery grocery
     );
-
-    void deleteByShoppingCartAndGrocery(
-        ShoppingCart shoppingCart,
-        Grocery grocery
-    );
 }
