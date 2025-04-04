@@ -72,6 +72,10 @@ public class GroceryController {
     ) {
         List<GroceryDTO> groceries = groceryService.searchGroceries(query);
         model.addAttribute("groceries", groceries);
+
+        ShoppingCartDTO shoppingCart = shoppingCartService.findUsersShoppingCart("testUserId");
+        model.addAttribute("shoppingCart", shoppingCart);
+
         return "components/product/productList";
     }
 
