@@ -54,11 +54,16 @@ public class ShoppingCartService {
     }
 
     @Transactional
-    public ShoppingCartDTO addGroceryToShoppingCart(String shoppingCartId, String groceryId, BigDecimal quantity) {
+    public ShoppingCartDTO addGroceryToShoppingCart(
+        String userId,
+        String shoppingCartId,
+        String groceryId,
+        BigDecimal quantity
+    ) {
         ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartId).orElseGet(() -> {
             ShoppingCart newShoppingCart = new ShoppingCart();
             newShoppingCart.setId(shoppingCartId);
-            newShoppingCart.setUserId("testUserId");
+            newShoppingCart.setUserId(userId);
             newShoppingCart.setCreatedAt(LocalDateTime.now());
             newShoppingCart.setUpdatedAt(LocalDateTime.now());
             return shoppingCartRepository.save(newShoppingCart);

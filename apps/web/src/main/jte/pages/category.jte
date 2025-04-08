@@ -7,6 +7,7 @@
 @param Category[] categories
 @param Pageable pageable
 @param ShoppingCartDTO shoppingCart
+@param boolean isAuthenticated
 
 @template.layout.main(content = @`
     <div class="flex flex-col justify-center items-center w-full relative">
@@ -23,4 +24,5 @@
             @template.components.product.productList(groceries = groceries.groceries(), shoppingCart = shoppingCart)
         </div>
     </div>
-`, categories = categories, shoppingCart = shoppingCart)
+`, categories = categories, isAuthenticated = isAuthenticated)
+`)

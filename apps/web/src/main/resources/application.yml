@@ -5,6 +5,8 @@ gg:
     template-location: apps/web/src/main/jte
 
 spring:
+  config:
+    import: optional:secrets.yml
   application:
     name: groceryPriceChecker-web
   datasource:
@@ -15,3 +17,14 @@ spring:
   devtools:
     restart:
       enabled: true
+  session:
+    jdbc:
+      cleanup-cron: "0 0 * * * *"
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope: profile, email

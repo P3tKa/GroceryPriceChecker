@@ -43,4 +43,7 @@ out/
 .DS_Store
 
 # Tailwind
-/src/main/tailwind/tailwindcss
+apps/web/src/main/tailwind/tailwindcss
+
+# Ignore local env files
+apps/web/src/main/resources/secrets.yml

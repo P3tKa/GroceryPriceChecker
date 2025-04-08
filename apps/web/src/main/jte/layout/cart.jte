@@ -3,9 +3,10 @@
 @import dev.petkevicius.groceryPriceChecker.domain.shoppingCart.dto.ShoppingCartGroceryDTO
 
 @param ShoppingCartDTO shoppingCart
-@param boolean opened
+@param String error = ""
+@param boolean opened = false
 
-<div id="shopping-cart-container" style="display: ${opened ? "block" : "none"}" class="relative z-10 mt-10 pt-10">
+<div id="shopping-cart-container" style="display: ${opened ? "block" : "none"}" class="absolute z-10 mt-10 pt-10">
     <!--
       Background backdrop, show/hide based on slide-over state.
 
@@ -59,6 +60,9 @@
                                 </div>
                             </div>
 
+                            @if(!error.isEmpty())
+                                <p>${error}</p>
+                            @else
                             <div class="mt-8">
                                 <div class="flow-root">
                                     <ul role="list" class="-my-6 divide-y divide-gray-200">
@@ -68,8 +72,10 @@
                                     </ul>
                                 </div>
                             </div>
+                            @endif
                         </div>
 
+                        @if(error.isEmpty())
                         <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
                             <div class="flex justify-between text-base font-medium text-gray-900">
                                 <p>Subtotal</p>
@@ -85,6 +91,7 @@
                                 <a href="#" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700">Checkout</a>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>

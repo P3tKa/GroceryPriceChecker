@@ -1,10 +1,9 @@
-@import dev.petkevicius.groceryPriceChecker.domain.shoppingCart.dto.ShoppingCartDTO
 @import gg.jte.Content
 @import dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category
 
 @param Content content
 @param Category[] categories
-@param ShoppingCartDTO shoppingCart
+@param boolean isAuthenticated = false
 
 <!doctype html>
 <html lang="en">
@@ -25,13 +24,13 @@
 </head>
 <body>
 <nav>
-    @template.layout.navbar()
+    @template.layout.navbar(isAuthenticated)
 </nav>
 <aside>
     @template.layout.sidebar(categories = categories)
 </aside>
 <aside>
-    @template.layout.cart(opened = false, shoppingCart = shoppingCart)
+    <div id="shopping-cart-container" class="absolute"></div>
 </aside>
 <main>
     ${content}
