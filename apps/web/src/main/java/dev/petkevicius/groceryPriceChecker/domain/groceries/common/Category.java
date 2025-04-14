@@ -16,7 +16,9 @@ public enum Category implements CategoryType {
         "Milk Products and Eggs",
         SubCategory.MILK,
         SubCategory.EGGS
-    );
+    ),
+    BAKERY_PRODUCTS_AND_CONFECTIONARY("Bakery Products and Confectionary"),
+    MEAT_FISH_AND_CULINARY("Meat, Fish and Culinary");
 
     private final String displayName;
     private final SubCategory[] subCategories;

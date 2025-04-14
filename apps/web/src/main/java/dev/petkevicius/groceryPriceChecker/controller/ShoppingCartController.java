@@ -46,6 +46,22 @@ public class ShoppingCartController {
         return "layout/cart";
     }
 
+    @GetMapping("/pdf")
+    public String getShoppingCartAsPdf(
+        Authentication authentication,
+        Model model
+    ) {
+        String userId = getUserId(authentication);
+        if (userId.isEmpty()) {
+            model.addAttribute("shoppingCart", null);
+            return "components/cart/cart-pdf";
+        }
+
+        ShoppingCartDTO shoppingCart = shoppingCartService.findUsersShoppingCart(userId);
+        model.addAttribute("shoppingCart", shoppingCart);
+        return "components/cart/cart-pdf";
+    }
+
     @PostMapping("/add")
     public String addItemToBasket(
         @RequestParam String shoppingCartId,

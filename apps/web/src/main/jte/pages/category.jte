@@ -21,8 +21,11 @@
                 @template.components.filter.pagination(currentPage=groceries.currentPage(), totalPages=groceries.totalPages())
                 @template.components.filter.filter(pageable = pageable)
             </form>
-            @template.components.product.productList(groceries = groceries.groceries(), shoppingCart = shoppingCart)
+            @template.components.product.productList(
+                groceries = groceries.groceries(),
+                shoppingCart = shoppingCart,
+                isAuthenticated = isAuthenticated
+            )
         </div>
     </div>
 `, categories = categories, isAuthenticated = isAuthenticated)
-`)

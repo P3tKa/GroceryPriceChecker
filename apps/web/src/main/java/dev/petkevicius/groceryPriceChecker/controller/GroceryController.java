@@ -2,6 +2,7 @@ package dev.petkevicius.groceryPriceChecker.controller;
 
 import static dev.petkevicius.groceryPriceChecker.service.auth.AuthUtils.getUserId;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import dev.petkevicius.groceryPriceChecker.domain.groceries.common.CategoryType;
@@ -33,7 +34,12 @@ public class GroceryController {
     }
 
     @GetMapping("/")
-    public String view() {
+    public String view(
+        Model model
+    ) {
+        BigDecimal totalPriceSaved = shoppingCartService.getTotalPriceSaved();
+        model.addAttribute("totalPriceSaved", totalPriceSaved);
+
         return "pages/index";
     }
 

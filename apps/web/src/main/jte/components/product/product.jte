@@ -4,6 +4,7 @@
 
 @param GroceryDTO grocery
 @param ShoppingCartDTO shoppingCart
+@param boolean isAuthenticated
 
 <div class="flex flex-col self-center items-center border border-black">
     <div style="width: 100%; padding-top: 100%; position: relative;">
@@ -19,13 +20,15 @@
             <p>€ ${vendor.price()} / ${grocery.unit()}</p>
         </div>
     @endfor
-    <button
-            hx-post="/cart/add"
-            hx-vals='{"shoppingCartId": "${shoppingCart.id()}", "groceryId": "${grocery.id()}", "quantity": "${grocery.quantity()}"}'
-            hx-target="#shopping-cart-container"
-            hx-swap="outerHTML"
-            class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
-    >
-        Add to Cart
-    </button>
+    @if(isAuthenticated)
+        <button
+                hx-post="/cart/add"
+                hx-vals='{"shoppingCartId": "${shoppingCart.id()}", "groceryId": "${grocery.id()}", "quantity": "${grocery.quantity()}"}'
+                hx-target="#shopping-cart-container"
+                hx-swap="outerHTML"
+                class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
+        >
+            Add to Cart
+        </button>
+    @endif
 </div>

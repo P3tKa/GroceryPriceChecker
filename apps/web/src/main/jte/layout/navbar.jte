@@ -55,18 +55,10 @@
                     <span class="whitespace-nowrap mt-[2px]">Sign in</span>
                     <img src="/svg/signIn.svg" alt="Sign in">
                 </button>
-                @template.components.auth.signIn()
+                @template.components.auth.signIn(showPopoverWrap = true)
             @endif
         </div>
         <div class="size-12 m-2">
-<%--            <button--%>
-<%--                    id="shopping-cart"--%>
-<%--                    class="relative inline-block cursor-pointer"--%>
-<%--                    hx-trigger="click"--%>
-<%--                    hx-swap="none"--%>
-<%--                    hx-vals='{"toggle": "true"}'--%>
-<%--                    onclick="togglePanel()"--%>
-<%--            >--%>
             <button
                     id="shopping-cart"
                     class="relative inline-block cursor-pointer"

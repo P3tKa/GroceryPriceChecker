@@ -1,27 +1,50 @@
 package dev.petkevicius.groceryPriceChecker.domain.auth;
 
-import lombok.Getter;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
 
-@Getter
-public class AuthUser extends User {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record AuthUser(String id, String email, String encodedPassword, Set<GrantedAuthority> authorities) implements UserDetails {
 
-    private final String id;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
 
-    public AuthUser(
-        String id,
-        String username,
-        String password,
-        boolean enabled,
-        boolean accountNonExpired,
-        boolean credentialsNonExpired,
-        boolean accountNonLocked,
-        Collection<? extends GrantedAuthority> authorities
-    ) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-        this.id = id;
+    @Override
+    public String getPassword() {
+        return encodedPassword;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonProperty("enabled")
+    public boolean isEnabled() {
+        return true;
     }
 }

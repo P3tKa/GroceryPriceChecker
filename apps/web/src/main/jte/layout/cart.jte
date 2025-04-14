@@ -7,16 +7,6 @@
 @param boolean opened = false
 
 <div id="shopping-cart-container" style="display: ${opened ? "block" : "none"}" class="absolute z-10 mt-10 pt-10">
-    <!--
-      Background backdrop, show/hide based on slide-over state.
-
-      Entering: "ease-in-out duration-500"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "ease-in-out duration-500"
-        From: "opacity-100"
-        To: "opacity-0"
-    -->
     <div id="backdrop"
          class="fixed inset-0 bg-gray-500/75 transition-opacity shopping-cart-backdrop ${opened ? "show-cart-backdrop" : ""}"
          aria-hidden="true">
@@ -26,16 +16,6 @@
     <div class="fixed inset-0 overflow-hidden">
         <div class="absolute insaet-0 overflow-hidden">
             <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-                <!--
-                  Slide-over panel, show/hide based on slide-over state.
-
-                  Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-                    From: "translate-x-full"
-                    To: "translate-x-0"
-                  Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-                    From: "translate-x-0"
-                    To: "translate-x-full"
-                -->
                 <div id="slideOverPanel"
                      class="pointer-events-auto w-screen max-w-md shopping-cart ${opened ? "show-cart" : ""}"
                 >
@@ -61,11 +41,19 @@
                             </div>
 
                             @if(!error.isEmpty())
-                                <p>${error}</p>
+                                <p>${"Sign in to use shopping cart"}</p>
                             @else
                             <div class="mt-8">
                                 <div class="flow-root">
                                     <ul role="list" class="-my-6 divide-y divide-gray-200">
+                                        @if(shoppingCart.shoppingCartGroceries().isEmpty())
+                                            <div class="flex flex-col items-center justify-center pt-40 text-center text-gray-500">
+                                                <svg class="w-16 h-16 mb-4 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M9 3v18m6-18v18M4 21h16M5 7h14M5 11h14M5 15h14" />
+                                                </svg>
+                                                <p class="text-lg font-medium">Your cart is empty</p>
+                                            </div>
+                                        @endif
                                         @for(ShoppingCartGroceryDTO shoppingCartGrocery : shoppingCart.shoppingCartGroceries())
                                             @template.components.cart.cart-product(shoppingCartId = shoppingCart.id(), shoppingCartGrocery = shoppingCartGrocery)
                                         @endfor
@@ -90,6 +78,12 @@
                             <div class="mt-6">
                                 <a href="#" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700">Checkout</a>
                             </div>
+                            <div class="mt-6">
+                                <button onclick="openAndPrintPdf()"
+                                        class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700">
+                                    Save as PDF
+                                </button>
+                            </div>
                         </div>
                         @endif
                     </div>
@@ -98,3 +92,11 @@
         </div>
     </div>
 </div>
+<script>
+    function openAndPrintPdf() {
+        const pdfWindow = window.open('/cart/pdf', '_blank');
+        pdfWindow.onload = () => {
+            pdfWindow.print();
+        };
+    }
+</script>

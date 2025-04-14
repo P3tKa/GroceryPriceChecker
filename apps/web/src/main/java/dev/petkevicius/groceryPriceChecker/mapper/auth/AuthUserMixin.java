@@ -7,17 +7,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.petkevicius.groceryPriceChecker.domain.auth.Authority;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AuthUserMixin {
 
     @JsonCreator
     public AuthUserMixin(
         @JsonProperty("id") String id,
-        @JsonProperty("username") String username,
         @JsonProperty("email") String email,
-        @JsonProperty("provider") String provider,
-        @JsonProperty("providerId") String providerId,
-        @JsonProperty("authorities") Set<Authority> authorities
+        @JsonProperty("encodedPassword") String encodedPassword,
+        @JsonProperty("authorities") Set<Authority> authorities,
+        @JsonProperty("enabled") boolean enabled
     ) {
     }
 }

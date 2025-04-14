@@ -4,6 +4,7 @@
 
 @param List<GroceryDTO> groceries
 @param ShoppingCartDTO shoppingCart
+@param boolean isAuthenticated
 
 @if(groceries.isEmpty())
     <div class="flex flex-col justify-center items-center w-full relative">
@@ -14,7 +15,7 @@
      style="grid-template-columns: repeat(auto-fit, minmax(min(175px, 100%), 1fr));
         ">
     @for(GroceryDTO grocery : groceries)
-        @template.components.product.product(grocery=grocery, shoppingCart=shoppingCart)
+        @template.components.product.product(grocery=grocery, shoppingCart=shoppingCart, isAuthenticated=isAuthenticated)
     @endfor
     @for(int i = groceries.size(); i < 4; i++)
         <div></div>

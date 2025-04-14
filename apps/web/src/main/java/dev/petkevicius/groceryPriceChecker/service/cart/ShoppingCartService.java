@@ -119,6 +119,10 @@ public class ShoppingCartService {
         return mapToShoppingCartDTO(shoppingCart);
     }
 
+    public BigDecimal getTotalPriceSaved() {
+        return shoppingCartRepository.getTotalPriceFromAllShoppingCarts();
+    }
+
     private ShoppingCartDTO mapToShoppingCartDTO(ShoppingCart shoppingCart) {
         return new ShoppingCartDTO(
             shoppingCart.getId(),

@@ -15,7 +15,7 @@ public class AuthUtils {
 
         Object principal = authentication.getPrincipal();
         return switch (principal) {
-            case AuthUser user -> getIdOrLogError(user.getId(), "AuthUser");
+            case AuthUser user -> getIdOrLogError(user.id(), "AuthUser");
             case OAuth2User oauth2User -> getIdOrLogError(oauth2User.getAttribute("id"), "OAuth2User");
             default -> {
                 log.error("Unsupported authentication principal type: {}", principal.getClass().getName());
