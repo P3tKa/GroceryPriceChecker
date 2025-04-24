@@ -39,6 +39,12 @@ public class BarboraConstants {
         {
             put(Category.SubCategory.FRUITS_AND_BERRIES, "darzoves-ir-vaisiai/vaisiai-ir-uogos");
             put(Category.SubCategory.VEGETABLES_AND_MUSHROOMS, "darzoves-ir-vaisiai/darzoves-ir-grybai");
+            put(Category.SubSubCategory.LONG_LIFE_MILK, "pieno-gaminiai-ir-kiausiniai/pienas/ilgo-galiojimo-pienas");
+            put(Category.SubSubCategory.PASTEURIZED_MILK, "pieno-gaminiai-ir-kiausiniai/pienas/pasterizuotas-pienas");
+            put(Category.SubSubCategory.MILK_DRINKS, "pieno-gaminiai-ir-kiausiniai/pienas/pieno-gerimai");
+            put(Category.SubSubCategory.CONDENSED_MILK, "pieno-gaminiai-ir-kiausiniai/pienas/sutirstintas-pienas");
+            put(Category.SubSubCategory.CHICKEN_EGGS, "pieno-gaminiai-ir-kiausiniai/kiausiniai/vistu-kiausiniai");
+            put(Category.SubSubCategory.QUAIL_EGGS, "pieno-gaminiai-ir-kiausiniai/kiausiniai/putpeliu-kiausiniai");
         }
     };
 }

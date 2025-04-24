@@ -42,6 +42,12 @@ public class IkiConstants {
                 "zSCBbf0YLv4CMmUSx6Ez",
                 "VX72LbxC8cV0A1Kh40k6"
             ));
+            put(Category.SubSubCategory.LONG_LIFE_MILK, List.of("DFu7WwowDc7NeJNRIHmw"));
+            put(Category.SubSubCategory.PASTEURIZED_MILK, List.of("B7UTvIzcguAYSjSplM0z"));
+            put(Category.SubSubCategory.MILK_DRINKS, List.of("zf0UdfDZI7oGlDmMoe0N"));
+            put(Category.SubSubCategory.CONDENSED_MILK, List.of("nj0qcjYDdDDcecG2qcQ7"));
+            put(Category.SubSubCategory.CHICKEN_EGGS, List.of("ewKKA6euD2QXtN8OpYnu"));
+            put(Category.SubSubCategory.QUAIL_EGGS, List.of("AI5QZEjMZPkhZZhyq7LT"));
         }
     };
 }

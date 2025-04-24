@@ -1,6 +1,7 @@
 package dev.petkevicius.groceryPriceChecker.service.rimi;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import dev.petkevicius.groceryPriceChecker.domain.groceries.VendorName;
@@ -36,10 +37,20 @@ public class RimiConstants {
         HTTP_HEADERS = new HttpHeaders(headers);
     }
 
-    public static final Map<CategoryType, String> CATEGORY_IDS = new HashMap<>() {
+    public static final Map<CategoryType, List<String>> CATEGORY_IDS = new HashMap<>() {
         {
-            put(Category.SubCategory.FRUITS_AND_BERRIES, "SH-15-3");
-            put(Category.SubCategory.VEGETABLES_AND_MUSHROOMS, "SH-15-1");
+            put(Category.SubCategory.FRUITS_AND_BERRIES, List.of("SH-15-3"));
+            put(Category.SubCategory.VEGETABLES_AND_MUSHROOMS, List.of("SH-15-1"));
+            put(Category.SubSubCategory.LONG_LIFE_MILK, List.of("SH-11-8-15"));
+            put(Category.SubSubCategory.PASTEURIZED_MILK, List.of("SH-11-8-17"));
+            put(Category.SubSubCategory.MILK_DRINKS, List.of("SH-11-8-18"));
+            put(Category.SubSubCategory.CONDENSED_MILK, List.of("SH-11-8-16"));
+            put(Category.SubSubCategory.CHICKEN_EGGS, List.of(
+                "SH-11-6-14", // Eco
+                "SH-11-6-16", // Free-range
+                "SH-11-6-13" // Kept on the litter
+            ));
+            put(Category.SubSubCategory.QUAIL_EGGS, List.of("SH-11-6-12") /*Other eggs*/ );
         }
     };
 }

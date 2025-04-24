@@ -11,8 +11,11 @@
         <p class="text-lg font-bold mt-4 text-gray-600">
             Total amount saved across all users:
             <span class="text-3xl text-green-500 font-extrabold">
-                €${totalPriceSaved.setScale(2, java.math.RoundingMode.HALF_UP)}
+                @if(totalPriceSaved != null)
+                    €${totalPriceSaved.setScale(2, java.math.RoundingMode.HALF_UP)}
+                @endif
             </span>
         </p>
+        <div id="grocery-list"></div>
     </div>
 `, categories = categories, isAuthenticated = isAuthenticated)

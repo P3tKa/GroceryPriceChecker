@@ -3,6 +3,7 @@ package dev.petkevicius.groceryPriceChecker.domain.groceries;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -61,7 +62,7 @@ public class GroceryVendor {
     @Column(name = "approved", nullable = false)
     private boolean approved;
 
-    @OneToMany(mappedBy = "groceryVendor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "groceryVendor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<GroceryPriceHistory> groceryPriceHistories;
 }
 

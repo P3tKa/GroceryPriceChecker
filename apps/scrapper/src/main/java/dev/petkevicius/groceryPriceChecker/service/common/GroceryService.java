@@ -1,12 +1,18 @@
 package dev.petkevicius.groceryPriceChecker.service.common;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import dev.petkevicius.groceryPriceChecker.domain.groceries.Grocery;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.GroceryPriceHistory;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.GroceryVendor;
+import dev.petkevicius.groceryPriceChecker.domain.groceries.Vendor;
 import dev.petkevicius.groceryPriceChecker.repository.groceries.GroceryRepository;
 import dev.petkevicius.groceryPriceChecker.repository.groceries.GroceryVendorRepository;
 import org.springframework.stereotype.Service;
@@ -15,13 +21,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class GroceryService {
 
+    private final GroceryNameService groceryNameService;
     private final GroceryRepository groceryRepository;
     private final GroceryVendorRepository groceryVendorRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public GroceryService(
+        GroceryNameService groceryNameService,
         GroceryRepository groceryRepository,
         GroceryVendorRepository groceryVendorRepository
     ) {
+        this.groceryNameService = groceryNameService;
         this.groceryRepository = groceryRepository;
         this.groceryVendorRepository = groceryVendorRepository;
     }
@@ -29,21 +41,43 @@ public class GroceryService {
     @Transactional
     public void saveOrUpdateGroceries(List<Grocery> groceries) {
         List<Grocery> newGroceries = new ArrayList<>();
+        List<Grocery> existingGroceries = new ArrayList<>();
         List<GroceryVendor> updatedVendors = new ArrayList<>();
 
         groceries.forEach(grocery -> {
+            String cleanedName = groceryNameService.stripSuffixes(grocery.getName());
+            grocery.setName(cleanedName);
+
             grocery.getGroceryVendors().forEach(vendor -> {
-                groceryVendorRepository.findByVendorAndGroceryCode(vendor.getVendor(), vendor.getGroceryCode())
-                    .ifPresentOrElse(existingVendorProduct -> {
-                        if (!existingVendorProduct.getPrice().equals(vendor.getPrice())) {
+                groceryVendorRepository.findByVendorAndGroceryCode(
+                    vendor.getVendor(),
+                    vendor.getGroceryCode()
+                ).ifPresentOrElse(existingVendorProduct -> {
+                        if (!existingVendorProduct.getPrice().equals(vendor.getPrice()) ||
+                            !existingVendorProduct.getPriceWithDiscount().equals(vendor.getPriceWithDiscount()) ||
+                            !existingVendorProduct.getPriceWithLoyaltyCard().equals(vendor.getPriceWithLoyaltyCard())
+                        ) {
                             updateExistingVendorProduct(existingVendorProduct, vendor);
                             updatedVendors.add(existingVendorProduct);
                         }
-                    }, () -> newGroceries.add(grocery)); // TODO: if vendor is not found try to find same product on different vendor
+                    }, () -> groceryRepository.findMatchingProduct(
+                            grocery.getName(),
+                            grocery.getCategory().name(),
+                            grocery.getUnit().name(),
+                            grocery.getQuantity()
+                    ).ifPresentOrElse(
+                        existingGrocery -> {
+                            addAdditionalVendorToGrocery(existingGrocery, grocery.getGroceryVendors());
+                            existingGroceries.add(existingGrocery);
+                        },
+                        () -> newGroceries.add(grocery)
+                    )
+                );
             });
         });
 
         groceryRepository.saveAll(newGroceries);
+        groceryRepository.saveAll(existingGroceries);
         groceryVendorRepository.saveAll(updatedVendors);
     }
 
@@ -61,5 +95,23 @@ public class GroceryService {
         existingVendor.setPriceWithDiscount(newVendor.getPriceWithDiscount());
         existingVendor.setPriceWithLoyaltyCard(newVendor.getPriceWithLoyaltyCard());
         existingVendor.setUpdatedAt(LocalDateTime.now());
+    }
+
+    private void addAdditionalVendorToGrocery(Grocery grocery, Set<GroceryVendor> newVendors) {
+        Set<GroceryVendor> vendors = newVendors.stream()
+            .map(newVendor -> GroceryVendor.builder()
+                .id(UUID.randomUUID().toString())
+                .grocery(grocery)
+                .vendor(entityManager.find(Vendor.class, newVendor.getVendor().getId()))
+                .groceryCode(newVendor.getGroceryCode())
+                .price(newVendor.getPrice())
+                .priceWithDiscount(newVendor.getPriceWithDiscount())
+                .priceWithLoyaltyCard(newVendor.getPriceWithLoyaltyCard())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .approved(false)
+                .build())
+            .collect(Collectors.toSet());
+        grocery.getGroceryVendors().addAll(vendors);
     }
 }

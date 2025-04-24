@@ -96,7 +96,13 @@ public enum Category implements CategoryType {
             SubSubCategory.MILK_DRINKS,
             SubSubCategory.CONDENSED_MILK
         ),
-        EGGS("Eggs", SubSubCategory.CHICKEN_EGGS);
+        EGGS("Eggs", SubSubCategory.CHICKEN_EGGS),
+        BREAD(
+            "Bread",
+            SubSubCategory.DARK_BREAD,
+            SubSubCategory.DARK_BREAD_WITH_SEASONINGS,
+            SubSubCategory.WHITE_BREAD
+        );
 
         private final String displayName;
         private final SubSubCategory[] subSubCategories;
@@ -148,7 +154,13 @@ public enum Category implements CategoryType {
         CONDENSED_MILK("Condensed Milk"),
 
         // EGGS
-        CHICKEN_EGGS("Chicken Eggs");
+        CHICKEN_EGGS("Chicken Eggs"),
+        QUAIL_EGGS("Quail Eggs"),
+
+        // BREAD
+        DARK_BREAD("Dark Bread"),
+        DARK_BREAD_WITH_SEASONINGS("Dark Bread with Seasonings"),
+        WHITE_BREAD("White Bread");
 
         private final String displayName;
 

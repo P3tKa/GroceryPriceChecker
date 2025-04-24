@@ -53,10 +53,10 @@ public class RimiFetchAPI {
 
         List<Grocery> allGroceries = new ArrayList<>();
 
-        CATEGORY_IDS.forEach((categoryType, categoryId) -> {
+        CATEGORY_IDS.forEach((categoryType, categoryIds) -> categoryIds.forEach(categoryId -> {
             List<Grocery> groceries = fetchCategoryProducts(categoryType, categoryId);
             allGroceries.addAll(groceries);
-        });
+        }));
 
         logger.info("Fetched {} groceries", allGroceries.size());
         groceryService.saveOrUpdateGroceries(allGroceries);
