@@ -61,6 +61,8 @@ public enum Category implements CategoryType {
             "Fruits and Berries",
             SubSubCategory.BANANA,
             SubSubCategory.LEMON,
+            SubSubCategory.EXOTIC_FRUITS,
+            SubSubCategory.MELONS_AND_WATERMELONS,
             SubSubCategory.APPLE,
             SubSubCategory.PEARS,
             SubSubCategory.GRAPES,
@@ -96,7 +98,7 @@ public enum Category implements CategoryType {
             SubSubCategory.MILK_DRINKS,
             SubSubCategory.CONDENSED_MILK
         ),
-        EGGS("Eggs", SubSubCategory.CHICKEN_EGGS),
+        EGGS("Eggs", SubSubCategory.CHICKEN_EGGS, SubSubCategory.QUAIL_EGGS),
         BREAD(
             "Bread",
             SubSubCategory.DARK_BREAD,

@@ -12,7 +12,11 @@
                 <h3>
                     <a href="#">${shoppingCartGrocery.grocery().name()}</a>
                 </h3>
+                <div class="flex flex-col">
                 <p class="ml-4">€${shoppingCartGrocery.grocery().groceryVendorDTOS().getFirst().price()}</p>
+                <img src="${shoppingCartGrocery.grocery().groceryVendorDTOS().getFirst().vendorDto().imageUrl()}"
+                    alt="Vendor" class="w-12 h-12 object-contain">
+                </div>
             </div>
             <p class="mt-1 text-sm text-gray-500">${shoppingCartGrocery.grocery().category()}</p>
         </div>

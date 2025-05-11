@@ -25,7 +25,7 @@
            hx-get="/search"
            hx-trigger="input changed delay:500ms, keyup[key=='Enter']:not([value=''])"
            hx-target="#grocery-list"
-           hx-swap="outerHTML"
+           hx-swap="innerHTML"
            hx-indicator="#loader-icon"
     >
     <div class="flex">

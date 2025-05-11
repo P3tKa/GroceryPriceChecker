@@ -5,6 +5,7 @@ import java.util.List;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.Grocery;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.common.CategoryType;
+import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.CheapestVendorDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,6 +26,27 @@ public interface GroceryRepository extends JpaRepository<Grocery, String> {
         LIMIT 10
         """, nativeQuery = true)
     List<Grocery> findBySearchQuery(@Param("searchQuery") String searchQuery);
+
+    @Query(value = """
+        SELECT gv.vendor_id AS name, v.image_url as imageUrl, AVG(gv.price / g.quantity) AS averagePrice
+        FROM groceries g
+        JOIN groceries_vendors gv ON g.id = gv.grocery_id
+        JOIN vendors v ON gv.vendor_id = v.id
+        WHERE gv.approved = true
+        AND (
+            CASE
+                WHEN :categoryType = 'category' THEN g.category
+                WHEN :categoryType = 'subCategory' THEN g.sub_category
+                WHEN :categoryType = 'subSubCategory' THEN g.sub_sub_category
+            END = :categoryValue
+        )
+        GROUP BY gv.vendor_id, v.image_url
+        ORDER BY averagePrice ASC
+        """, nativeQuery = true)
+    List<CheapestVendorDTO> findCheapestItemInSpecificCategory(
+        @Param("categoryType") String categoryType,
+        @Param("categoryValue") String categoryValue
+    );
 
     @Query(value = """
             SELECT *
@@ -71,6 +93,17 @@ public interface GroceryRepository extends JpaRepository<Grocery, String> {
                 findGroceriesWithApprovedVendors("subCategory", subCategory.name(), pageable);
             case Category.SubSubCategory subSubCategory ->
                 findGroceriesWithApprovedVendors("subSubCategory", subSubCategory.name(), pageable);
+        };
+    }
+
+    default List<CheapestVendorDTO> findCheapestItemInSpecificCategory(CategoryType categoryType) {
+        return switch (categoryType) {
+            case Category category ->
+                findCheapestItemInSpecificCategory("category", category.name());
+            case Category.SubCategory subCategory ->
+                findCheapestItemInSpecificCategory("subCategory", subCategory.name());
+            case Category.SubSubCategory subSubCategory ->
+                findCheapestItemInSpecificCategory("subSubCategory", subSubCategory.name());
         };
     }
 }

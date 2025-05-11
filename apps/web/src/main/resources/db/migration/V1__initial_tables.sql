@@ -7,7 +7,7 @@ CREATE table IF NOT EXISTS groceries (
     sub_category varchar,
     sub_sub_category varchar,
     barcodes bigint[],
-    quantity DECIMAL(10, 2) NOT NULL CHECK (quantity >= 0),
+    quantity DECIMAL(10, 3) NOT NULL CHECK (quantity >= 0),
     unit varchar NOT NULL,
     image_url varchar,
     search_vector tsvector GENERATED ALWAYS AS (to_tsvector('lithuanian', name)) STORED
@@ -29,8 +29,7 @@ CREATE table IF NOT EXISTS groceries_vendors (
     price_with_loyalty_card DECIMAL(10, 2) CHECK (price_with_loyalty_card >= 0),
     created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    approved boolean NOT NULL DEFAULT FALSE,
-    UNIQUE (vendor_id, grocery_code)
+    approved boolean NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS grocery_price_history (

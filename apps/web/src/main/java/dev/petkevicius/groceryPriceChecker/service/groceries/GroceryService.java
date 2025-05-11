@@ -1,10 +1,12 @@
 package dev.petkevicius.groceryPriceChecker.service.groceries;
 
+import java.util.Comparator;
 import java.util.List;
 
 import dev.petkevicius.groceryPriceChecker.domain.groceries.Grocery;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.GroceryVendor;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.common.CategoryType;
+import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.CheapestVendorDTO;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryDTO;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryPageDTO;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryVendorDTO;
@@ -40,6 +42,10 @@ public class GroceryService {
         );
     }
 
+    public List<CheapestVendorDTO> getCheapestCategoryGrocery(CategoryType categoryType) {
+       return groceryRepository.findCheapestItemInSpecificCategory(categoryType);
+    }
+
     public List<GroceryDTO> searchGroceries(String query) {
         return groceryRepository.findBySearchQuery(query).stream()
             .filter(grocery -> grocery.getGroceryVendors().stream().anyMatch(GroceryVendor::isApproved))
@@ -61,6 +67,7 @@ public class GroceryService {
             grocery.getImageUrl(),
             grocery.getGroceryVendors().stream()
                 .filter(GroceryVendor::isApproved)
+                .sorted(Comparator.comparing(GroceryVendor::getPrice))
                 .map(groceryVendor -> new GroceryVendorDTO(
                     new VendorDTO(
                         groceryVendor.getVendor().getId(),

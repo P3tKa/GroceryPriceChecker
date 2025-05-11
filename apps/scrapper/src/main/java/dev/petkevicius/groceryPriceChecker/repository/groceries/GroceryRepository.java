@@ -17,8 +17,8 @@ public interface GroceryRepository extends JpaRepository<Grocery, String> {
         FROM groceries
         WHERE category = :categoryId
             AND unit = :unit
-            AND quantity = :quantity
-            AND similarity(name, :inputName) > 0.65
+            AND quantity BETWEEN :quantity - 0.05 AND :quantity + 0.05
+            AND similarity(name, :inputName) > 0.7
         ORDER BY similarity(name, :inputName) DESC
         LIMIT 1
         """, nativeQuery = true)

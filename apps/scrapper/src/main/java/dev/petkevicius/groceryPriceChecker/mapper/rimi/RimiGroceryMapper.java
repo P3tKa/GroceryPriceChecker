@@ -84,8 +84,8 @@ public class RimiGroceryMapper extends GroceryMapper {
             }
 
             BigDecimal quantity = (priceWithDiscount != null)
-                ? priceWithDiscount.divide(pricePerUnit, RoundingMode.HALF_DOWN)
-                : price.divide(pricePerUnit, RoundingMode.HALF_DOWN);
+                ? priceWithDiscount.divide(pricePerUnit, 3, RoundingMode.HALF_DOWN)
+                : price.divide(pricePerUnit, 3, RoundingMode.HALF_DOWN);
 
             Grocery grocery = Grocery.builder()
                 .id(UUID.randomUUID().toString())

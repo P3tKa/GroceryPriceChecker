@@ -57,6 +57,10 @@ public class GroceryController {
         GroceryPageDTO groceries = groceryService.getALlApprovedGroceries(categoryType, pageable);
         model.addAttribute("groceries", groceries);
         model.addAttribute("pageable", pageable);
+        model.addAttribute(
+            "cheapestVendorsByCategory",
+            groceryService.getCheapestCategoryGrocery(categoryType)
+        );
 
         ShoppingCartDTO shoppingCart = shoppingCartService.findUsersShoppingCart(userId);
         model.addAttribute("shoppingCart", shoppingCart);

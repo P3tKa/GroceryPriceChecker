@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class GroceryNameService {
 
-    private static final String UNIT_SUFFIX_REGEX = ",\\s*\\d+\\s*(vnt\\.|kg|g|ml)";
-    private static final String STERIL_REGEX = "\\bSteril.\\b";
+    private static final String UNIT_SUFFIX_REGEX = ",\\s*\\d{1,3}(,\\d+)?\\s*(vnt\\.|kg|g|ml|l|%)";
+    private static final String STERIL_REGEX = "Steril\\.";
+    private static final String RIEB_REGEX = "rieb\\.";
     private static final Map<String, String> shorthandMap = new HashMap<>(
         Map.of(
-            "braš.", "braškinis.",
+            "braš.", "braškinis",
             "šok.", "šokoladinis",
             "ban.", "bananinis",
             "ml", "ml"
@@ -24,6 +25,7 @@ public class GroceryNameService {
     public String stripSuffixes(String productName) {
         String result = productName.replaceAll(UNIT_SUFFIX_REGEX, "")
             .replaceAll(STERIL_REGEX, "")
+            .replaceAll(RIEB_REGEX, "")
             .trim();
         return replaceShorthand(result);
     }

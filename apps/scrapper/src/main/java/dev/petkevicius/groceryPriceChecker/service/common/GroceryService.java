@@ -2,6 +2,7 @@ package dev.petkevicius.groceryPriceChecker.service.common;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,13 +50,14 @@ public class GroceryService {
             grocery.setName(cleanedName);
 
             grocery.getGroceryVendors().forEach(vendor -> {
-                groceryVendorRepository.findByVendorAndGroceryCode(
+                groceryVendorRepository.findByVendorAndGroceryCodeAndGrocery_Category(
                     vendor.getVendor(),
-                    vendor.getGroceryCode()
+                    vendor.getGroceryCode(),
+                    vendor.getGrocery().getCategory()
                 ).ifPresentOrElse(existingVendorProduct -> {
-                        if (!existingVendorProduct.getPrice().equals(vendor.getPrice()) ||
-                            !existingVendorProduct.getPriceWithDiscount().equals(vendor.getPriceWithDiscount()) ||
-                            !existingVendorProduct.getPriceWithLoyaltyCard().equals(vendor.getPriceWithLoyaltyCard())
+                        if (hasPriceChanged(existingVendorProduct.getPrice(), vendor.getPrice()) ||
+                            hasPriceChanged(existingVendorProduct.getPriceWithDiscount(), vendor.getPriceWithDiscount()) ||
+                            hasPriceChanged(existingVendorProduct.getPriceWithLoyaltyCard(), vendor.getPriceWithLoyaltyCard())
                         ) {
                             updateExistingVendorProduct(existingVendorProduct, vendor);
                             updatedVendors.add(existingVendorProduct);
@@ -113,5 +115,16 @@ public class GroceryService {
                 .build())
             .collect(Collectors.toSet());
         grocery.getGroceryVendors().addAll(vendors);
+    }
+
+    private boolean hasPriceChanged(BigDecimal oldPrice, BigDecimal newPrice) {
+        if (oldPrice == null && newPrice == null) {
+            return false;
+        }
+        if (oldPrice == null || newPrice == null) {
+            return true;
+        }
+
+        return oldPrice.compareTo(newPrice) != 0;
     }
 }

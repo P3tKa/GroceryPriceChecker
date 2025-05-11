@@ -1,3 +1,5 @@
+@import java.util.List
+@import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.CheapestVendorDTO
 @import dev.petkevicius.groceryPriceChecker.domain.groceries.dto.GroceryPageDTO
 @import dev.petkevicius.groceryPriceChecker.domain.groceries.common.Category
 @import dev.petkevicius.groceryPriceChecker.domain.shoppingCart.dto.ShoppingCartDTO
@@ -7,6 +9,7 @@
 @param Category[] categories
 @param Pageable pageable
 @param ShoppingCartDTO shoppingCart
+@param List<CheapestVendorDTO> cheapestVendorsByCategory
 @param boolean isAuthenticated
 
 @template.layout.main(content = @`
@@ -24,7 +27,8 @@
             @template.components.product.productList(
                 groceries = groceries.groceries(),
                 shoppingCart = shoppingCart,
-                isAuthenticated = isAuthenticated
+                isAuthenticated = isAuthenticated,
+                cheapestVendorsByCategory = cheapestVendorsByCategory
             )
         </div>
     </div>

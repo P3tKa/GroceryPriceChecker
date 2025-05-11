@@ -6,6 +6,7 @@ import static dev.petkevicius.groceryPriceChecker.service.iki.IkiConstants.VENDO
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dev.petkevicius.groceryPriceChecker.domain.groceries.Grocery;
 import dev.petkevicius.groceryPriceChecker.domain.groceries.common.CategoryType;
@@ -48,8 +49,18 @@ public class IkiFetchAPI {
             allGroceries.addAll(groceries);
         }));
 
+        List<Grocery> filteredGroceries = allGroceries.stream()
+            .collect(Collectors.toMap(
+                grocery -> grocery.getGroceryVendors().iterator().next().getGroceryCode(),
+                grocery -> grocery,
+                (existing, replacement) -> existing
+            ))
+            .values()
+            .stream()
+            .toList();
+
         logger.info("Fetched {} groceries", allGroceries.size());
-        groceryService.saveOrUpdateGroceries(allGroceries);
+        groceryService.saveOrUpdateGroceries(filteredGroceries);
 
         logger.info("Finished fetching products for vendor {}", VENDOR_NAME.name());
         return allGroceries;

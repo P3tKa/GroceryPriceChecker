@@ -52,11 +52,11 @@ public class BarboraGroceryMapper  extends GroceryMapper {
             }
 
             BigDecimal quantity = priceWithDiscount != null ?
-                priceWithDiscount.divide(product.getComparative_unit_price(), RoundingMode.HALF_DOWN) :
+                priceWithDiscount.divide(product.getComparative_unit_price(), 3, RoundingMode.HALF_DOWN) :
                 (
                     priceWithLoyalty != null ?
-                        priceWithLoyalty.divide(product.getComparative_unit_price(), RoundingMode.HALF_DOWN) :
-                        price.divide(product.getComparative_unit_price_brutto(), RoundingMode.HALF_DOWN)
+                        priceWithLoyalty.divide(product.getComparative_unit_price(), 3, RoundingMode.HALF_DOWN) :
+                        price.divide(product.getComparative_unit_price_brutto(), 3, RoundingMode.HALF_DOWN)
                 );
 
             Grocery grocery = Grocery.builder()
