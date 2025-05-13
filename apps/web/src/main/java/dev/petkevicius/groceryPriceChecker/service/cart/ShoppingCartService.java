@@ -1,6 +1,8 @@
 package dev.petkevicius.groceryPriceChecker.service.cart;
 
 import dev.petkevicius.groceryPriceChecker.domain.groceries.Grocery;
+import dev.petkevicius.groceryPriceChecker.domain.groceries.GroceryVendor;
+import dev.petkevicius.groceryPriceChecker.domain.groceries.VendorName;
 import dev.petkevicius.groceryPriceChecker.domain.shoppingCart.ShoppingCart;
 import dev.petkevicius.groceryPriceChecker.domain.shoppingCart.ShoppingCartGrocery;
 import dev.petkevicius.groceryPriceChecker.domain.shoppingCart.dto.ShoppingCartDTO;
@@ -14,8 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ShoppingCartService {
@@ -74,17 +79,29 @@ public class ShoppingCartService {
         if (existingItem.isPresent()) {
             ShoppingCartGrocery shoppingCartGrocery = existingItem.get();
             shoppingCartGrocery.setQuantity(shoppingCartGrocery.getQuantity().add(quantity));
-            shoppingCartGroceryRepository.save(shoppingCartGrocery);
+            shoppingCart.getShoppingCartGroceries().add(shoppingCartGrocery);
         } else {
             ShoppingCartGrocery shoppingCartGrocery = new ShoppingCartGrocery();
             shoppingCartGrocery.setId(UUID.randomUUID().toString());
             shoppingCartGrocery.setShoppingCart(shoppingCart);
             shoppingCartGrocery.setGrocery(grocery);
             shoppingCartGrocery.setQuantity(quantity);
-            shoppingCartGroceryRepository.save(shoppingCartGrocery);
+            shoppingCart.getShoppingCartGroceries().add(shoppingCartGrocery);
         }
-
+        shoppingCartRepository.save(shoppingCart);
         return mapToShoppingCartDTO(shoppingCart);
+    }
+
+    @Transactional
+    public ShoppingCartDTO chooseAlternativeGrocery(
+        String userId,
+        String shoppingCartId,
+        String newGroceryId,
+        String oldGroceryId,
+        BigDecimal quantity
+    ) {
+        removeItemFromBasket(shoppingCartId, oldGroceryId);
+        return addGroceryToShoppingCart(userId, shoppingCartId, newGroceryId, quantity);
     }
 
     @Transactional
@@ -126,6 +143,7 @@ public class ShoppingCartService {
     private ShoppingCartDTO mapToShoppingCartDTO(ShoppingCart shoppingCart) {
         return new ShoppingCartDTO(
             shoppingCart.getId(),
+            getMostPopularCheapestVendor(shoppingCart),
             shoppingCart.getShoppingCartGroceries().stream()
                 .map(grocery -> new ShoppingCartGroceryDTO (
                         grocery.getId(),
@@ -134,5 +152,18 @@ public class ShoppingCartService {
                     ))
                 .toList()
         );
+    }
+
+    private VendorName getMostPopularCheapestVendor(ShoppingCart shoppingCart) {
+        return shoppingCart.getShoppingCartGroceries().stream()
+            .map(grocery -> grocery.getGrocery().getGroceryVendors().stream()
+                .min(Comparator.comparing(GroceryVendor::getPrice)) // Select the vendor with the cheapest price
+                .orElseThrow(() -> new IllegalArgumentException("No vendors available for grocery"))
+                .getVendor().getId())
+            .collect(Collectors.groupingBy(vendor -> vendor, Collectors.counting()))
+            .entrySet().stream()
+            .max(Map.Entry.comparingByValue())
+            .map(Map.Entry::getKey)
+            .orElse(null);
     }
 }

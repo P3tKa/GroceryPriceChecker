@@ -550,11 +550,23 @@
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
+  .top-2 {
+    top: calc(var(--spacing) * 2);
+  }
   .right-0 {
     right: calc(var(--spacing) * 0);
   }
+  .right-2 {
+    right: calc(var(--spacing) * 2);
+  }
   .right-95 {
     right: calc(var(--spacing) * 95);
+  }
+  .right-200 {
+    right: calc(var(--spacing) * 200);
+  }
+  .right-300 {
+    right: calc(var(--spacing) * 300);
   }
   .bottom-19 {
     bottom: calc(var(--spacing) * 19);
@@ -567,6 +579,9 @@
   }
   .z-10 {
     z-index: 10;
+  }
+  .z-100 {
+    z-index: 100;
   }
   .-m-1 {
     margin: calc(var(--spacing) * -1);
@@ -689,6 +704,9 @@
   .h-5 {
     height: calc(var(--spacing) * 5);
   }
+  .h-6 {
+    height: calc(var(--spacing) * 6);
+  }
   .h-7 {
     height: calc(var(--spacing) * 7);
   }
@@ -725,8 +743,14 @@
   .h-screen {
     height: 100vh;
   }
+  .w-1\/3 {
+    width: calc(1/3 * 100%);
+  }
   .w-5 {
     width: calc(var(--spacing) * 5);
+  }
+  .w-6 {
+    width: calc(var(--spacing) * 6);
   }
   .w-8 {
     width: calc(var(--spacing) * 8);
@@ -772,6 +796,10 @@
   }
   .-translate-y-1\/2 {
     --tw-translate-y: calc(calc(1/2 * 100%) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .translate-x-full {
+    --tw-translate-x: 100%;
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .scale-80 {
@@ -976,6 +1004,9 @@
   .p-6 {
     padding: calc(var(--spacing) * 6);
   }
+  .p-8 {
+    padding: calc(var(--spacing) * 8);
+  }
   .px-0 {
     padding-inline: calc(var(--spacing) * 0);
   }
@@ -1107,6 +1138,9 @@
   .text-green-500 {
     color: var(--color-green-500);
   }
+  .text-green-600 {
+    color: var(--color-green-600);
+  }
   .text-indigo-600 {
     color: var(--color-indigo-600);
   }
@@ -1180,6 +1214,10 @@
   .duration-200 {
     --tw-duration: 200ms;
     transition-duration: 200ms;
+  }
+  .duration-300 {
+    --tw-duration: 300ms;
+    transition-duration: 300ms;
   }
   .ease-in-out {
     --tw-ease: var(--ease-in-out);
@@ -1276,6 +1314,13 @@
     &:hover {
       @media (hover: hover) {
         color: var(--color-gray-800);
+      }
+    }
+  }
+  .hover\:text-green-500 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-green-500);
       }
     }
   }

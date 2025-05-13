@@ -8,6 +8,11 @@
         document.getElementById('backdrop').classList.toggle('show-cart-backdrop');
         document.getElementById('slideOverPanel').classList.toggle('show-cart');
     }
+
+    function toggleAlternativeProductPanel() {
+        const alternativeProductContainer = document.getElementById('alternative-list');
+        alternativeProductContainer.innerHTML = '';
+    }
 </script>
 
 <div class="flex justify-between align-center h-22">

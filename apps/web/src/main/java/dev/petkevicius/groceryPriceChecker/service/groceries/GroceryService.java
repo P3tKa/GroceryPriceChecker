@@ -54,6 +54,18 @@ public class GroceryService {
             .toList();
     }
 
+    public List<GroceryDTO> findAlternativeGroceries(String groceryId, String vendorId) {
+        return groceryRepository.findById(groceryId)
+            .map(grocery ->
+                groceryRepository.findBySearchQuery(grocery.getName(), vendorId).stream()
+                    .filter(g -> g.getGroceryVendors().stream().anyMatch(GroceryVendor::isApproved))
+                    .distinct()
+                    .map(this::mapToGroceryDTO)
+                    .toList()
+            )
+            .orElse(List.of());
+    }
+
     public GroceryDTO mapToGroceryDTO(Grocery grocery) {
         return new GroceryDTO(
             grocery.getId(),

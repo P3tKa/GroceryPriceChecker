@@ -7,10 +7,31 @@
 @param ShoppingCartDTO shoppingCart
 @param boolean isAuthenticated
 @param List<CheapestVendorDTO> cheapestVendorsByCategory
+@param boolean isAlternativeGrocerySuggestion = false
+@param String groceryToChangeId = null
 
 @if(groceries.isEmpty())
     <div class="flex flex-col justify-center items-center w-full relative">
         <h2>No groceries found</h2>
+    </div>
+@endif
+
+@if(isAlternativeGrocerySuggestion)
+    <button type="button"
+            class="relative -m-2 p-8 text-gray-400 hover:text-gray-500 cursor-pointer"
+            hx-trigger="click"
+            hx-swap="none"
+            hx-vals='{"toggle": "true"}'
+            onclick="toggleAlternativeProductPanel()"
+    >
+        <span class="absolute -inset-0.5"></span>
+        <span class="sr-only">Close panel</span>
+        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+    </button>
+    <div class="flex flex-col justify-center items-center w-full relative">
+        <h2 class="text-2xl font-semibold text-gray-800">Alternative grocery suggestion</h2>
     </div>
 @endif
 @if(cheapestVendorsByCategory != null && !cheapestVendorsByCategory.isEmpty())
@@ -22,7 +43,13 @@
      style="grid-template-columns: repeat(auto-fit, minmax(min(175px, 100%), 1fr));
         ">
     @for(GroceryDTO grocery : groceries)
-        @template.components.product.product(grocery=grocery, shoppingCart=shoppingCart, isAuthenticated=isAuthenticated)
+        @template.components.product.product(
+            grocery=grocery,
+            shoppingCart=shoppingCart,
+            isAuthenticated=isAuthenticated,
+            isAlternativeGrocerySuggestion=isAlternativeGrocerySuggestion,
+            groceryToChangeId=groceryToChangeId
+        )
     @endfor
     @for(int i = groceries.size(); i < 4; i++)
         <div></div>

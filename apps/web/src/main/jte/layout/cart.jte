@@ -16,6 +16,7 @@
     <div class="fixed inset-0 overflow-hidden">
         <div class="absolute insaet-0 overflow-hidden">
             <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+                <div id="alternative-list" class="pointer-events-auto bg-white border z-100 border-gray-200 rounded-lg shadow-lg"></div>
                 <div id="slideOverPanel"
                      class="pointer-events-auto w-screen max-w-md shopping-cart ${opened ? "show-cart" : ""}"
                 >
@@ -55,7 +56,7 @@
                                             </div>
                                         @endif
                                         @for(ShoppingCartGroceryDTO shoppingCartGrocery : shoppingCart.shoppingCartGroceries())
-                                            @template.components.cart.cart-product(shoppingCartId = shoppingCart.id(), shoppingCartGrocery = shoppingCartGrocery)
+                                            @template.components.cart.cart-product(shoppingCartId = shoppingCart.id(), shoppingCartGrocery = shoppingCartGrocery, mostPopularCheapestVendor = shoppingCart.cheapestVendor())
                                         @endfor
                                     </ul>
                                 </div>

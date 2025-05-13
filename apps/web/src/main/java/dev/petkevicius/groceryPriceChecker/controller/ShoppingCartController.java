@@ -75,6 +75,27 @@ public class ShoppingCartController {
         return "layout/cart";
     }
 
+    @PutMapping("/add")
+    public String chooseAlternativeItem(
+        @RequestParam String shoppingCartId,
+        @RequestParam String newGroceryId,
+        @RequestParam String oldGroceryId,
+        @RequestParam BigDecimal quantity,
+        Authentication authentication,
+        Model model
+    ) {
+        ShoppingCartDTO shoppingCart = shoppingCartService.chooseAlternativeGrocery(
+            getUserId(authentication),
+            shoppingCartId,
+            newGroceryId,
+            oldGroceryId,
+            quantity
+        );
+        model.addAttribute("opened", true);
+        model.addAttribute("shoppingCart", shoppingCart);
+        return "layout/cart";
+    }
+
     @DeleteMapping("/{shoppingCartId}/remove")
     public String removeItemFromBasket(
         @PathVariable String shoppingCartId,

@@ -85,4 +85,24 @@ public class GroceryController {
         return "components/product/productList";
     }
 
+    @GetMapping("/alternative/{vendorName}/{groceryId}")
+    public String getAlternativeGroceries(
+        @PathVariable String vendorName,
+        @PathVariable String groceryId,
+        Model model,
+        Authentication authentication
+    ) {
+        String userId = getUserId(authentication);
+
+        List<GroceryDTO> alternativeGroceries = groceryService.findAlternativeGroceries(groceryId, vendorName);
+        model.addAttribute("groceries", alternativeGroceries);
+        model.addAttribute("isAlternativeGrocerySuggestion", true);
+        model.addAttribute("groceryToChangeId", groceryId);
+
+        ShoppingCartDTO shoppingCart = shoppingCartService.findUsersShoppingCart(userId);
+        model.addAttribute("shoppingCart", shoppingCart);
+
+        return "components/product/productList";
+    }
+
 }

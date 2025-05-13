@@ -22,10 +22,14 @@ public interface GroceryRepository extends JpaRepository<Grocery, String> {
         JOIN groceries_vendors gv ON g.id = gv.grocery_id
         JOIN plainto_tsquery('lithuanian', :searchQuery) as query ON g.search_vector @@ query
         WHERE gv.approved = true
+        AND (:vendorId IS NULL OR gv.vendor_id = :vendorId)
         ORDER BY rank DESC
         LIMIT 10
         """, nativeQuery = true)
-    List<Grocery> findBySearchQuery(@Param("searchQuery") String searchQuery);
+    List<Grocery> findBySearchQuery(
+        @Param("searchQuery") String searchQuery,
+        @Param("vendorId") String vendorId
+    );
 
     @Query(value = """
         SELECT gv.vendor_id AS name, v.image_url as imageUrl, AVG(gv.price / g.quantity) AS averagePrice
@@ -105,5 +109,9 @@ public interface GroceryRepository extends JpaRepository<Grocery, String> {
             case Category.SubSubCategory subSubCategory ->
                 findCheapestItemInSpecificCategory("subSubCategory", subSubCategory.name());
         };
+    }
+
+    default List<Grocery> findBySearchQuery(String searchQuery) {
+        return findBySearchQuery(searchQuery, null);
     }
 }
