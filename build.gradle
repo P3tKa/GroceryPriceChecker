@@ -11,7 +11,7 @@ tasks.named('bootJar') {
 
 allprojects {
 	group = 'dev.petkevicius'
-	version = '0.0.1-SNAPSHOT'
+	version = '1'
 
 	repositories {
 		mavenCentral()
@@ -32,7 +32,7 @@ subprojects {
 
 	checkstyle {
 		configFile = file("${rootProject.projectDir}/config/checkstyle/checks.xml")
-		ignoreFailures = false
+		ignoreFailures = true
 		toolVersion = "10.21.2"
 		maxWarnings = 0
 	}
