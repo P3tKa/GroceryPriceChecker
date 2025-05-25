@@ -13,10 +13,12 @@
              alt="${grocery.name()}"
              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
     </div>
-    <h2 class="self-center" style="height: 70px; text-align: center">${grocery.name()}</h2>
+    <h2 class="self-center clamp-text">
+        ${grocery.name()}
+    </h2>
 
     @for(GroceryVendorDTO vendor : grocery.sortVendorsByPrice())
-        <div class="flex">
+        <div class="flex pb-1">
             <img src="${vendor.vendorDto().imageUrl()}" alt="${vendor.vendorDto().name()}" class="h-4">
             <p>€ ${vendor.price()} / ${grocery.unit()}</p>
         </div>
@@ -45,3 +47,20 @@
         @endif
     @endif
 </div>
+
+<style>
+    .clamp-text {
+        text-align: center;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 70px;
+        line-height: 1.5em;
+        word-wrap: break-word;
+        margin: 0.5rem;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+</style>
